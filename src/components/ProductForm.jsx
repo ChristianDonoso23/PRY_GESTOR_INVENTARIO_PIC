@@ -39,17 +39,40 @@ function ProductForm({ onProductoCreado, productoEditar, onCancelarEdicion }) {
         e.preventDefault()
         setError('')
 
-        const nombreNormalizado = nombre.trim().toLowerCase()
+        const nombreLimpio = nombre.trim()
+        const nombreNormalizado = nombreLimpio.toLowerCase()
+        const precioNumero = Number(precio)
 
-        // Validación campos vacíos
-        if (!nombre.trim() || !categoria || !precio) {
+        // Validar campos vacíos
+        if (!nombreLimpio || !categoria || !precio) {
             setError('Todos los campos son obligatorios.')
+            return
+        }
+
+        // Validar caracteres del nombre
+        const nombreRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9]+(?:[ -]?[A-Za-zÁÉÍÓÚáéíóúÑñ0-9]+)*$/
+
+        if (!nombreRegex.test(nombreLimpio)) {
+            setError('El nombre solo puede contener letras, números, espacios y un guion entre palabras.')
+            return
+        }
+
+
+        // Validar precio numérico válido
+        if (isNaN(precioNumero)) {
+            setError('El precio debe ser un número válido.')
+            return
+        }
+
+        // Validar precio positivo mayor que 0
+        if (precioNumero <= 0) {
+            setError('El precio debe ser mayor que 0.')
             return
         }
 
         const productos = await getProductos()
 
-        // Validación duplicado (solo activos y excluyendo el que se edita)
+        // Validar duplicado activo
         const existeDuplicado = productos.some(p =>
             p.activo &&
             p.id !== (productoEditar ? productoEditar.id : null) &&
@@ -63,9 +86,9 @@ function ProductForm({ onProductoCreado, productoEditar, onCancelarEdicion }) {
 
         const producto = {
             id: productoEditar ? productoEditar.id : crypto.randomUUID(),
-            nombre: nombre.trim(),
+            nombre: nombreLimpio,
             categoria,
-            precio: Number(precio),
+            precio: precioNumero,
             activo: true
         }
 
@@ -76,6 +99,7 @@ function ProductForm({ onProductoCreado, productoEditar, onCancelarEdicion }) {
         if (onProductoCreado) onProductoCreado()
         if (onCancelarEdicion) onCancelarEdicion()
     }
+
 
 
     return (
