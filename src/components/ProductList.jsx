@@ -68,6 +68,8 @@ function ProductList({ refresh, onEditar, onEliminar }) {
                                             className="sf-btn-delete"
                                             onClick={async () => {
                                                 await desactivarProducto(producto.id)
+                                                // actualizar la lista local inmediatamente
+                                                setProductos(prev => prev.filter(p => p.id !== producto.id))
                                                 if (onEliminar) onEliminar()
                                             }}
                                         >
