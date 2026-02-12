@@ -75,70 +75,83 @@ function MovementForm({ onMovimientoGuardado, onProductoSeleccionado, refresh })
     }
 
     return (
-        <div className="card shadow-lg border-0 mb-4">
-        <div className="card-body">
-            <h5 className="card-title mb-3">Registrar Movimiento</h5>
-
-            {error && (
-            <div className="alert alert-danger">
-                {error}
+        <div className="sf-form-card mb-4">
+            <div className="sf-form-card-header">
+                <span className="sf-form-card-icon">⇄</span>
+                <h5 className="sf-form-card-title">Registrar Movimiento</h5>
             </div>
-            )}
+            <div className="sf-form-card-body">
 
-            <form onSubmit={handleSubmit}>
+                {error && (
+                    <div className="sf-alert sf-alert-danger">
+                        <span className="sf-alert-icon">⚠</span>
+                        {error}
+                    </div>
+                )}
 
-            <div className="mb-3">
-                <label className="form-label">Producto</label>
-                <select
-                className="form-select"
-                value={productoId}
-                onChange={handleProductoChange}
-                >
-                <option value="">Seleccione...</option>
-                {productos.map(p => (
-                    <option key={p.id} value={p.id}>
-                    {p.nombre}
-                    </option>
-                ))}
-                </select>
+                <form onSubmit={handleSubmit}>
+
+                    <div className="sf-field">
+                        <label className="sf-label">Producto</label>
+                        <select
+                            className="sf-select"
+                            value={productoId}
+                            onChange={handleProductoChange}
+                        >
+                            <option value="">Seleccione...</option>
+                            {productos.map(p => (
+                                <option key={p.id} value={p.id}>
+                                    {p.nombre}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {productoId && (
+                        <div className="sf-stock-badge-wrap">
+                            <span className="sf-stock-badge">
+                                Stock actual: <strong>{stockActual}</strong>
+                            </span>
+                        </div>
+                    )}
+
+                    <div className="sf-field">
+                        <label className="sf-label">Tipo de Movimiento</label>
+                        <div className="sf-tipo-toggle">
+                            <button
+                                type="button"
+                                className={`sf-tipo-btn sf-tipo-entrada${tipo === 'entrada' ? ' active' : ''}`}
+                                onClick={() => setTipo('entrada')}
+                            >
+                                ↑ Entrada
+                            </button>
+                            <button
+                                type="button"
+                                className={`sf-tipo-btn sf-tipo-salida${tipo === 'salida' ? ' active' : ''}`}
+                                onClick={() => setTipo('salida')}
+                            >
+                                ↓ Salida
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="sf-field">
+                        <label className="sf-label">Cantidad</label>
+                        <input
+                            type="number"
+                            className="sf-input"
+                            value={cantidad}
+                            onChange={(e) => setCantidad(e.target.value)}
+                            placeholder="0"
+                        />
+                    </div>
+
+                    <button type="submit" className="sf-btn-submit w-100">
+                        Guardar Movimiento
+                    </button>
+
+                </form>
             </div>
-
-            {productoId && (
-                <div className="mb-3">
-                <span className="badge bg-info">
-                    Stock actual: {stockActual}
-                </span>
-                </div>
-            )}
-
-            <div className="mb-3">
-                <label className="form-label">Tipo</label>
-                <select
-                className="form-select"
-                value={tipo}
-                onChange={(e) => setTipo(e.target.value)}
-                >
-                <option value="entrada">Entrada</option>
-                <option value="salida">Salida</option>
-                </select>
-            </div>
-
-            <div className="mb-3">
-                <label className="form-label">Cantidad</label>
-                <input
-                type="number"
-                className="form-control"
-                value={cantidad}
-                onChange={(e) => setCantidad(e.target.value)}
-                />
-            </div>
-
-            <button type="submit" className="btn btn-primary w-100">
-                Guardar Movimiento
-            </button>
-
-            </form>
-        </div>
         </div>
     )
 }

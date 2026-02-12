@@ -58,64 +58,71 @@ function ProductForm({ onProductoCreado, productoEditar, onCancelarEdicion }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="row g-4">
+        <form onSubmit={handleSubmit} className="sf-product-form">
 
-            <div className="col-md-6">
-                <label className="form-label fw-bold">
-                    📦 Nombre del Producto
-                </label>
-                <input
-                    type="text"
-                    className="form-control form-control-lg shadow-sm"
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                    placeholder="Ej: Laptop HP"
-                />
+            <div className="sf-product-form-header">
+                <span className="sf-form-card-icon">📦</span>
+                <h5 className="sf-form-card-title">
+                    {productoEditar ? 'Editar Producto' : 'Nuevo Producto'}
+                </h5>
             </div>
 
-            <div className="col-md-6">
-                <label className="form-label fw-bold">
-                    🏷 Categoría
-                </label>
-                <select
-                    className="form-select form-select-lg shadow-sm"
-                    value={categoria}
-                onChange={(e) => setCategoria(e.target.value)}
-                >
-                <option value="">Seleccione categoría</option>
-                    {categorias.map((cat, index) => (
-                        <option key={index} value={cat}>{cat}</option>
-                    ))}
-                </select>
-            </div>
+            <div className="sf-product-form-grid">
 
-            <div className="col-md-6">
-                <label className="form-label fw-bold">
-                    💲 Precio
-                </label>
-                <input
-                    type="number"
-                    className="form-control form-control-lg shadow-sm"
-                    value={precio}
-                    onChange={(e) => setPrecio(e.target.value)}
-                    placeholder="0.00"
-                />
-            </div>
+                <div className="sf-field">
+                    <label className="sf-label">Nombre del Producto</label>
+                    <input
+                        type="text"
+                        className="sf-input"
+                        value={nombre}
+                        onChange={(e) => setNombre(e.target.value)}
+                        placeholder="Ej: Laptop HP"
+                    />
+                </div>
 
-            <div className="col-md-6 d-flex align-items-end">
-                <button type="submit" className="btn btn-primary w-100">
-                    {productoEditar ? 'Actualizar Producto' : 'Guardar Producto'}
-                </button>
+                <div className="sf-field">
+                    <label className="sf-label">Categoría</label>
+                    <select
+                        className="sf-select"
+                        value={categoria}
+                        onChange={(e) => setCategoria(e.target.value)}
+                    >
+                        <option value="">Seleccione categoría</option>
+                        {categorias.map((cat, index) => (
+                            <option key={index} value={cat}>{cat}</option>
+                        ))}
+                    </select>
+                </div>
 
-                {productoEditar && (
-                <button
-                    type="button"
-                    className="btn btn-secondary w-100 mt-2"
-                    onClick={onCancelarEdicion}
-                >
-                    Cancelar
-                </button>
-                )}
+                <div className="sf-field">
+                    <label className="sf-label">Precio</label>
+                    <div className="sf-input-prefix-wrap">
+                        <span className="sf-input-prefix">$</span>
+                        <input
+                            type="number"
+                            className="sf-input sf-input-prefixed"
+                            value={precio}
+                            onChange={(e) => setPrecio(e.target.value)}
+                            placeholder="0.00"
+                        />
+                    </div>
+                </div>
+
+                <div className="sf-field sf-field-actions">
+                    <button type="submit" className="sf-btn-submit">
+                        {productoEditar ? '✓ Actualizar Producto' : '+ Guardar Producto'}
+                    </button>
+
+                    {productoEditar && (
+                        <button
+                            type="button"
+                            className="sf-btn-cancel"
+                            onClick={onCancelarEdicion}
+                        >
+                            Cancelar
+                        </button>
+                    )}
+                </div>
 
             </div>
         </form>

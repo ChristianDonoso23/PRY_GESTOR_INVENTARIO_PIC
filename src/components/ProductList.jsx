@@ -23,76 +23,63 @@ function ProductList({ refresh, onEditar, onEliminar }) {
         cargarProductos()
     }, [refresh])
 
-    return (
-        <div className="mt-5">
+    const getStockChip = (stock) => {
+        if (stock === 0)   return { cls: 'empty',  label: `Sin stock` }
+        if (stock <= 5)    return { cls: 'low',    label: `Stock bajo: ${stock}` }
+        return                    { cls: 'ok',     label: `Stock: ${stock}` }
+    }
 
-            <h4 className="mb-4 fw-bold text-center">
-                📋 Productos Registrados
-            </h4>
+    return (
+        <div className="sf-products-section">
+
+            <h4 className="sf-section-title">Productos Registrados</h4>
 
             <div className="row g-4">
 
                 {productos.length === 0 && (
-                    <p className="text-center text-muted">
-                        No hay productos registrados
-                    </p>
+                    <div className="col-12">
+                        <p className="sf-product-empty">No hay productos registrados</p>
+                    </div>
                 )}
 
-                {productos.map((producto) => (
-                    <div key={producto.id} className="col-md-4">
+                {productos.map((producto) => {
+                    const chip = getStockChip(producto.stock)
+                    return (
+                        <div key={producto.id} className="col-md-4">
+                            <div className="card product-card h-100">
+                                <div className="card-body d-flex flex-column" style={{ padding: '1.25rem' }}>
 
-                        <div className="card product-card h-100 border-0 shadow-sm">
+                                    <p className="sf-product-category">{producto.categoria}</p>
+                                    <h5 className="sf-product-name">{producto.nombre}</h5>
+                                    <p className="sf-product-price">${producto.precio.toLocaleString()}</p>
 
-                            <div className="card-body">
+                                    <span className={`sf-stock-chip ${chip.cls}`}>
+                                        {chip.cls === 'empty' ? '✕' : chip.cls === 'low' ? '⚠' : '✓'} {chip.label}
+                                    </span>
 
-                                <h5 className="fw-bold">
-                                    {producto.nombre}
-                                </h5>
-
-                                <p className="text-muted mb-1">
-                                    Categoría: {producto.categoria}
-                                </p>
-
-                                <p className="fs-5 fw-semibold text-primary">
-                                    ${producto.precio}
-                                </p>
-
-                                <span className={`badge ${
-                                    producto.stock === 0
-                                        ? 'bg-danger'
-                                        : producto.stock <= 5
-                                        ? 'bg-warning text-dark'
-                                        : 'bg-success'
-                                }`}>
-                                    Stock: {producto.stock}
-                                </span>
-
-                                <div className="mt-3 d-flex gap-2">
-                                    <button
-                                    className="btn btn-sm btn-outline-primary w-100"
-                                    onClick={() => onEditar(producto)}
-                                    >
-                                    Editar
-                                    </button>
-                                    <button
-                                        className="btn btn-sm btn-outline-danger w-100"
-                                        onClick={async () => {
-                                            await desactivarProducto(producto.id)
-                                            if (onEliminar) onEliminar()
-                                        }}
-                                    >
-                                        Eliminar
-                                    </button>
-
+                                    <div className="sf-card-actions mt-auto">
+                                        <button
+                                            className="sf-btn-edit"
+                                            onClick={() => onEditar(producto)}
+                                        >
+                                            ✎ Editar
+                                        </button>
+                                        <button
+                                            className="sf-btn-delete"
+                                            onClick={async () => {
+                                                await desactivarProducto(producto.id)
+                                                if (onEliminar) onEliminar()
+                                            }}
+                                        >
+                                            ✕ Eliminar
+                                        </button>
+                                    </div>
 
                                 </div>
-
-                                </div>
-
+                            </div>
                         </div>
-
-                    </div>
-                ))}
+                    )
+                })}
 
             </div>
         </div>

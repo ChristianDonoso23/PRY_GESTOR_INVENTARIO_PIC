@@ -25,15 +25,18 @@ function MovementHistory({ productoId, refresh }) {
     if (!productoId) return null
 
     return (
-        <div className="card shadow border-0 mt-4">
-            <div className="card-body">
-                <h6 className="mb-3">Historial de Movimientos</h6>
+        <div className="sf-history-card mt-4">
+            <div className="sf-form-card-header">
+                <span className="sf-form-card-icon">≡</span>
+                <h6 className="sf-form-card-title">Historial de Movimientos</h6>
+            </div>
+            <div className="sf-form-card-body">
 
                 {movimientos.length === 0 ? (
-                    <p className="text-muted">Sin movimientos registrados</p>
+                    <p className="sf-empty-state">Sin movimientos registrados</p>
                 ) : (
                     <div className="table-responsive">
-                        <table className="table table-sm align-middle">
+                        <table className="sf-table">
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
@@ -45,16 +48,16 @@ function MovementHistory({ productoId, refresh }) {
                                 {movimientos.map(m => (
                                     <tr key={m.id}>
                                         <td>
-                                            <span className={`badge ${
+                                            <span className={`sf-mov-badge ${
                                                 m.tipo === 'entrada'
-                                                    ? 'bg-success'
-                                                    : 'bg-danger'
+                                                    ? 'sf-mov-entrada'
+                                                    : 'sf-mov-salida'
                                             }`}>
-                                                {m.tipo}
+                                                {m.tipo === 'entrada' ? '↑' : '↓'} {m.tipo}
                                             </span>
                                         </td>
-                                        <td>{m.cantidad}</td>
-                                        <td>
+                                        <td className="sf-table-qty">{m.cantidad}</td>
+                                        <td className="sf-table-date">
                                             {new Date(m.fecha).toLocaleString()}
                                         </td>
                                     </tr>

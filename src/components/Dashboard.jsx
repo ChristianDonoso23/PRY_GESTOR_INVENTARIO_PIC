@@ -28,45 +28,22 @@ function Dashboard({ refresh }) {
         cargarDatos()
     }, [refresh])
 
+    const stats = [
+        { label: 'Productos Activos', value: totalProductos, icon: '⊞', mod: ''       },
+        { label: 'Stock Total',        value: stockGlobal,    icon: '◈', mod: ''       },
+        { label: 'Stock Bajo',         value: stockBajo,      icon: '⚠', mod: 'danger' },
+        { label: 'Movimientos Hoy',    value: movimientosHoy, icon: '⇄', mod: 'accent' },
+    ]
+
     return (
-        <div className="row mb-4">
-
-            <div className="col-md-3">
-                <div className="card text-center shadow border-0">
-                    <div className="card-body">
-                        <h6 className="text-muted">Productos Activos</h6>
-                        <h3>{totalProductos}</h3>
-                    </div>
+        <div className="sf-dashboard-grid mb-4">
+            {stats.map(({ label, value, icon, mod }) => (
+                <div key={label} className={`sf-stat-card${mod ? ` sf-stat-${mod}` : ''}`}>
+                    <div className="sf-stat-icon">{icon}</div>
+                    <div className="sf-stat-value">{value}</div>
+                    <div className="sf-stat-label">{label}</div>
                 </div>
-            </div>
-
-            <div className="col-md-3">
-                <div className="card text-center shadow border-0">
-                    <div className="card-body">
-                        <h6 className="text-muted">Stock Total</h6>
-                        <h3>{stockGlobal}</h3>
-                    </div>
-                </div>
-            </div>
-
-            <div className="col-md-3">
-                <div className="card text-center shadow border-0">
-                    <div className="card-body">
-                        <h6 className="text-muted">Stock Bajo</h6>
-                        <h3 className="text-danger">{stockBajo}</h3>
-                    </div>
-                </div>
-            </div>
-
-            <div className="col-md-3">
-                <div className="card text-center shadow border-0">
-                    <div className="card-body">
-                        <h6 className="text-muted">Movimientos Hoy</h6>
-                        <h3 className="text-primary">{movimientosHoy}</h3>
-                    </div>
-                </div>
-            </div>
-
+            ))}
         </div>
     )
 }
