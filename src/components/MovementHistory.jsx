@@ -9,11 +9,9 @@ function MovementHistory({ productoId, refresh }) {
         if (productoId) {
             const cargarMovimientos = async () => {
                 const data = await getMovimientosByProducto(productoId)
-
                 const ordenados = data.sort((a, b) =>
                     new Date(b.fecha) - new Date(a.fecha)
                 )
-
                 setMovimientos(ordenados)
             }
             cargarMovimientos()
@@ -22,17 +20,21 @@ function MovementHistory({ productoId, refresh }) {
         }
     }, [productoId, refresh])
 
-    if (!productoId) return null
-
     return (
-        <div className="sf-history-card mt-4">
+        <div className="sf-history-card">
             <div className="sf-form-card-header">
                 <span className="sf-form-card-icon">≡</span>
                 <h6 className="sf-form-card-title">Historial de Movimientos</h6>
             </div>
             <div className="sf-form-card-body">
 
-                {movimientos.length === 0 ? (
+                {!productoId ? (
+                    <div className="sf-history-empty">
+                        <div className="sf-history-empty-icon">◈</div>
+                        <p className="sf-history-empty-title">Sin producto seleccionado</p>
+                        <p className="sf-history-empty-sub">Selecciona un producto en el formulario de movimientos para ver su historial</p>
+                    </div>
+                ) : movimientos.length === 0 ? (
                     <p className="sf-empty-state">Sin movimientos registrados</p>
                 ) : (
                     <div className="table-responsive">
@@ -49,9 +51,7 @@ function MovementHistory({ productoId, refresh }) {
                                     <tr key={m.id}>
                                         <td>
                                             <span className={`sf-mov-badge ${
-                                                m.tipo === 'entrada'
-                                                    ? 'sf-mov-entrada'
-                                                    : 'sf-mov-salida'
+                                                m.tipo === 'entrada' ? 'sf-mov-entrada' : 'sf-mov-salida'
                                             }`}>
                                                 {m.tipo === 'entrada' ? '↑' : '↓'} {m.tipo}
                                             </span>

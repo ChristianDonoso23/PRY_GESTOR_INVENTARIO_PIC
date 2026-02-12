@@ -696,3 +696,105 @@ body {
   .sf-badge { display: none; }
   .sf-dashboard-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ══════════════════════════════════════════════════════════
+   CRUD PAGE LAYOUT
+══════════════════════════════════════════════════════════ */
+.sf-page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--sf-text);
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+}
+
+/* Visual breathing room between each section */
+.sf-section-divider {
+  height: 1px;
+  background: var(--sf-border);
+  margin: 2rem 0;
+  position: relative;
+}
+
+.sf-section-divider::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 3px;
+  background: var(--sf-blue);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+/* ── Input text visibility fixes ─────────────────────── */
+.sf-select,
+.sf-select:focus {
+  color: var(--sf-text);
+}
+
+.sf-input:-webkit-autofill,
+.sf-input:-webkit-autofill:hover,
+.sf-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--sf-text);
+  -webkit-box-shadow: 0 0 0px 1000px var(--sf-bg-input) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.sf-input[type="number"] {
+  color: var(--sf-text);
+}
+
+.sf-input[type="number"]::-webkit-inner-spin-button,
+.sf-input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.3;
+  filter: invert(1);
+}
+
+/* ── Two-column layout: make ProductForm fill full height ── */
+.col-lg-6 > .sf-product-form {
+  height: 100%;
+}
+
+/* ══════════════════════════════════════════════════════════
+   HISTORY EMPTY STATE
+══════════════════════════════════════════════════════════ */
+.sf-history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.sf-history-empty-icon {
+  font-size: 2.5rem;
+  opacity: 0.15;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.sf-history-empty-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--sf-text-body);
+  margin: 0;
+}
+
+.sf-history-empty-sub {
+  font-size: 0.8rem;
+  color: var(--sf-text-muted);
+  margin: 0;
+  max-width: 260px;
+  line-height: 1.5;
+}
+
+/* Right column fills height of left column */
+.col-lg-6 > .sf-history-card {
+  min-height: 100%;
+}

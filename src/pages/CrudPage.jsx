@@ -8,27 +8,43 @@ function CrudPage({ refresh, recargar, productoEditar, setProductoEditar }) {
     const [productoSeleccionado, setProductoSeleccionado] = useState(null)
 
     return (
-        <div className="container py-5">
-        <h2 className="mb-4 text-center fw-bold">Gestión de Inventario</h2>
+        <div className="container-fluid px-4 py-5" style={{ maxWidth: '1800px' }}>
 
-        <Dashboard refresh={refresh} />
+            <h2 className="sf-page-title mb-4">Gestión de Inventario</h2>
 
-        <ProductForm
-            onProductoCreado={recargar}
-            productoEditar={productoEditar}
-            onCancelarEdicion={() => setProductoEditar(null)}
-        />
+            {/* Dashboard ocupa todo el ancho */}
+            {/* <div className="mb-5">
+                <Dashboard refresh={refresh} />
+            </div> */}
 
-        <MovementForm
-            onMovimientoGuardado={recargar}
-            onProductoSeleccionado={setProductoSeleccionado}
-            refresh={refresh}
-        />
+            <div className="row g-4 align-items-start">
 
-        <MovementHistory
-            productoId={productoSeleccionado}
-            refresh={refresh}
-        />
+                {/* Columna izquierda: Producto */}
+                <div className="col-lg-6 d-flex flex-column gap-4">
+                    <Dashboard refresh={refresh}></Dashboard>
+                    <ProductForm
+                        onProductoCreado={recargar}
+                        productoEditar={productoEditar}
+                        onCancelarEdicion={() => setProductoEditar(null)}
+                    />
+                </div>
+
+                {/* Columna derecha: Movimientos + Historial */}
+                <div className="col-lg-6 d-flex flex-column gap-4">
+                    <MovementForm
+                        onMovimientoGuardado={recargar}
+                        onProductoSeleccionado={setProductoSeleccionado}
+                        refresh={refresh}
+                    />
+                    
+                    <MovementHistory
+                        productoId={productoSeleccionado}
+                        refresh={refresh}
+                    />
+                </div>
+
+            </div>
+
         </div>
     )
 }
