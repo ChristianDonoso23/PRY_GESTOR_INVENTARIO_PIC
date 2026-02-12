@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { addProducto } from '../services/db'
 import { useEffect } from 'react'
+import { addProducto, getProductos } from '../services/db'
 
 const categorias = [
     'Tecnología',
@@ -23,6 +23,8 @@ function ProductForm({ onProductoCreado, productoEditar, onCancelarEdicion }) {
     const [categoria, setCategoria] = useState('')
     const [precio, setPrecio] = useState('')
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+
 
     useEffect(() => {
         if (productoEditar) {
@@ -35,10 +37,33 @@ function ProductForm({ onProductoCreado, productoEditar, onCancelarEdicion }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setError('')
+
+        const nombreNormalizado = nombre.trim().toLowerCase()
+
+        // Validación campos vacíos
+        if (!nombre.trim() || !categoria || !precio) {
+            setError('Todos los campos son obligatorios.')
+            return
+        }
+
+        const productos = await getProductos()
+
+        // Validación duplicado (solo activos y excluyendo el que se edita)
+        const existeDuplicado = productos.some(p =>
+            p.activo &&
+            p.id !== (productoEditar ? productoEditar.id : null) &&
+            p.nombre.trim().toLowerCase() === nombreNormalizado
+        )
+
+        if (existeDuplicado) {
+            setError('Ya existe un producto activo con ese nombre.')
+            return
+        }
 
         const producto = {
             id: productoEditar ? productoEditar.id : crypto.randomUUID(),
-            nombre,
+            nombre: nombre.trim(),
             categoria,
             precio: Number(precio),
             activo: true
@@ -48,14 +73,10 @@ function ProductForm({ onProductoCreado, productoEditar, onCancelarEdicion }) {
 
         limpiarFormulario()
 
-        if (onProductoCreado) {
-            onProductoCreado()
-        }
-
-        if (onCancelarEdicion) {
-            onCancelarEdicion()
-        }
+        if (onProductoCreado) onProductoCreado()
+        if (onCancelarEdicion) onCancelarEdicion()
     }
+
 
     return (
         <form onSubmit={handleSubmit} className="sf-product-form">
@@ -65,6 +86,11 @@ function ProductForm({ onProductoCreado, productoEditar, onCancelarEdicion }) {
                 <h5 className="sf-form-card-title">
                     {productoEditar ? 'Editar Producto' : 'Nuevo Producto'}
                 </h5>
+                {error && (
+                    <div className="alert alert-danger py-2">
+                        {error}
+                    </div>
+                )}
             </div>
 
             <div className="sf-product-form-grid">
