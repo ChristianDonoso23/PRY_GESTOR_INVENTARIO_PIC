@@ -1,0 +1,35 @@
+.app-background {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #f1f5f9;
+}
+
+.card {
+  background-color: #ffffff;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.btn-gradient {
+  background: linear-gradient(45deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+}
+
+.product-card {
+  transition: all 0.3s ease;
+  border-radius: 20px;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
